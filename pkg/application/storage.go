@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/MrMihen13/FinanceFlow-Libs/pkg/database"
+	"gorm.io/gorm"
 )
 
 var ErrStorageEnabled = errors.New("storage already enabled")
@@ -32,8 +33,8 @@ func WithStorage(e ...storage) Option {
 	}
 }
 
-var Gorm = func(cfg *database.ConnConfig) storage {
+var Gorm = func(connCfg *database.ConnConfig, cfg *gorm.Config) storage {
 	return newStorage("database", func(a *App) error {
-		return initGorm(a, cfg)
+		return initGorm(a, connCfg, cfg)
 	})
 }

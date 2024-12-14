@@ -8,13 +8,13 @@ import (
 	"gorm.io/gorm"
 )
 
-func Connect(_ context.Context, cfg *ConnConfig) (*gorm.DB, error) {
-	connString, err := buildConnectionString(cfg)
+func Connect(_ context.Context, connCfg *ConnConfig, gormCfg *gorm.Config) (*gorm.DB, error) {
+	connString, err := buildConnectionString(connCfg)
 	if err != nil {
 		return nil, err
 	}
 
-	client, err := gorm.Open(postgres.Open(connString), &gorm.Config{})
+	client, err := gorm.Open(postgres.Open(connString), gormCfg)
 	if err != nil {
 		return nil, err
 	}

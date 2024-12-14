@@ -1,10 +1,13 @@
 package application
 
-import "github.com/MrMihen13/FinanceFlow-Libs/pkg/database"
+import (
+	"github.com/MrMihen13/FinanceFlow-Libs/pkg/database"
+	"gorm.io/gorm"
+)
 
-func initGorm(a *App, cfg *database.ConnConfig) error {
+func initGorm(a *App, connCfg *database.ConnConfig, cfg *gorm.Config) error {
 	var err error
-	a.DB, err = database.Connect(a.Ctx, cfg)
+	a.DB, err = database.Connect(a.Ctx, connCfg, cfg)
 	if err != nil {
 		a.Log.Fatal(a.Ctx, "Failed to connect to database", err)
 		return err

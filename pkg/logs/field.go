@@ -14,4 +14,4 @@ func Float64(key string, value float64) slog.Attr        { return slog.Float64(k
 func Bool(key string, value bool) slog.Attr              { return slog.Bool(key, value) }
 func Time(key string, value time.Time) slog.Attr         { return slog.Time(key, value) }
 func Duration(key string, value time.Duration) slog.Attr { return slog.Duration(key, value) }
-func Err(val error) slog.Attr                            { return Any("error", val) }
+func Err(val error) slog.Attr                            { return Any("error", val.Error()) }

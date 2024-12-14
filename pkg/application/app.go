@@ -54,23 +54,23 @@ func NewAppWithContext(ctx context.Context, log *logs.Logger, opts ...Option) (*
 }
 
 func (a *App) Run() {
-	a.Log.Info(a.Ctx, "Starting application")
+	a.Log.Debug(a.Ctx, "Starting application")
 
 	if len(a.services) == 0 {
-		a.Log.Fatal(a.Ctx, "No services to start")
+		a.Log.Warn(a.Ctx, "No services to start")
 	}
 
 	if err := a.services.run(a); err != nil {
-		a.Log.ErrorContext(a.Ctx, "run services", err)
+		a.Log.Fatal(a.Ctx, "run services", err)
 		panic(err)
 	}
 
 	select {
 	case <-a.closed:
-		a.Log.InfoContext(a.Ctx, "Application closed before started")
+		a.Log.Warn(a.Ctx, "application closed before started")
 	case a.started <- struct{}{}:
 		close(a.started)
-		a.Log.InfoContext(a.Ctx, "Application started")
+		a.Log.Info(a.Ctx, "application started")
 	}
 	// wait for close
 	<-a.closed
@@ -84,10 +84,10 @@ func (a *App) Shutdown() {
 }
 
 func (a *App) gracefulShutdown() {
-	defer a.Log.InfoContext(a.Ctx, "graceful shutdown completed")
+	defer a.Log.Debug(a.Ctx, "graceful shutdown completed")
 
 	sig := <-a.shutdown
-	a.Log.InfoContext(a.Ctx, "graceful shutdown signal received", sig)
+	a.Log.Info(a.Ctx, "graceful shutdown signal received", sig)
 
 	if err := a.services.stop(a); err != nil {
 		a.Log.ErrorContext(a.Ctx, "graceful shutdown failed", err)

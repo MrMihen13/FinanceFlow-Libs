@@ -27,7 +27,7 @@ func (a *App) runParallel(ctx context.Context, funcs ...interface{}) error {
 
 			defer func() {
 				if err != nil {
-					a.Log.ErrorContext(ctx, "Error with running "+name, err)
+					a.Log.Error(ctx, "Error with running "+name, err)
 				}
 			}()
 			switch t := f.(type) {

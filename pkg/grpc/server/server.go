@@ -31,7 +31,7 @@ func (s *Server) Run() error {
 		return err
 	}
 
-	s.log.With("address", l.Addr().String()).Info(context.Background(), "GRPC server started")
+	s.log.Info(context.Background(), "GRPC server started", logs.String("address", l.Addr().String()))
 
 	if err := s.GRPC.Serve(l); err != nil {
 		return err
@@ -41,6 +41,6 @@ func (s *Server) Run() error {
 }
 
 func (s *Server) Stop() {
-	defer s.log.InfoContext(context.Background(), "GRPC server stopped")
+	defer s.log.Info(context.Background(), "GRPC server stopped")
 	s.GRPC.GracefulStop()
 }
